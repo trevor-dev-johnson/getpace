@@ -24,12 +24,12 @@ fun DashboardScreen() {
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Your Pace",
+                        text = "Total Saved",
                         style = MaterialTheme.typography.titleMedium
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "$0 saved",
+                        text = "$0",
                         style = MaterialTheme.typography.headlineLarge
                     )
                     Spacer(modifier = Modifier.height(4.dp))
