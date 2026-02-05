@@ -2,13 +2,17 @@ package xyz.getpace.pace.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun DashboardScreen() {
+    var totalSaved by remember { mutableStateOf(0) }
+    var streak by remember { mutableStateOf(0) }
+    var hasSavedToday by remember { mutableStateOf(false) }
+
     Scaffold { innerPadding ->
         Column(
             modifier = Modifier
@@ -18,40 +22,25 @@ fun DashboardScreen() {
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
 
-            // 1. Your Pace
-            Card(
-                modifier = Modifier.fillMaxWidth()
-            ) {
+            // Total Saved
+            Card(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        text = "Total Saved",
-                        style = MaterialTheme.typography.titleMedium
-                    )
+                    Text("Total Saved", style = MaterialTheme.typography.titleMedium)
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "$0",
+                        text = "$$totalSaved",
                         style = MaterialTheme.typography.headlineLarge
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = "Start building your savings habit.",
-                        style = MaterialTheme.typography.bodyMedium
                     )
                 }
             }
 
-            // 2. Streak
-            Card(
-                modifier = Modifier.fillMaxWidth()
-            ) {
+            // Streak
+            Card(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        text = "Current streak",
-                        style = MaterialTheme.typography.titleMedium
-                    )
+                    Text("Current Streak", style = MaterialTheme.typography.titleMedium)
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "0 days",
+                        text = "$streak days",
                         style = MaterialTheme.typography.headlineMedium
                     )
                     Spacer(modifier = Modifier.height(4.dp))
@@ -62,50 +51,47 @@ fun DashboardScreen() {
                 }
             }
 
-            // 3. Today’s Action
-            Card(
-                modifier = Modifier.fillMaxWidth()
-            ) {
+            // Action
+            Card(modifier = Modifier.fillMaxWidth()) {
                 Column(
                     modifier = Modifier.padding(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(
-                        text = "Today’s action",
-                        style = MaterialTheme.typography.titleMedium
-                    )
+                    Text("Today’s Action", style = MaterialTheme.typography.titleMedium)
                     Spacer(modifier = Modifier.height(12.dp))
+
                     Button(
-                        onClick = { /* TODO */ },
+                        onClick = {
+                            totalSaved += 5
+                            streak += 1
+                            hasSavedToday = true
+                        },
+                        enabled = !hasSavedToday,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Save Today")
+                        Text(if (hasSavedToday) "Saved Today" else "Save Today")
                     }
+
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Small actions add up.",
+                        text = if (hasSavedToday)
+                            "Nice work — come back tomorrow."
+                        else
+                            "Small actions add up.",
                         style = MaterialTheme.typography.bodySmall
                     )
                 }
             }
 
-            // 4. Rewards Preview
-            Card(
-                modifier = Modifier.fillMaxWidth()
-            ) {
+            // Rewards Preview
+            Card(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        text = "Rewards",
-                        style = MaterialTheme.typography.titleMedium
-                    )
+                    Text("Rewards", style = MaterialTheme.typography.titleMedium)
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = "Rewards coming soon",
-                        style = MaterialTheme.typography.bodyLarge
-                    )
+                    Text("Rewards coming soon", style = MaterialTheme.typography.bodyLarge)
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "Consistency unlocks SKR bonuses.",
+                        "Consistency unlocks SKR bonuses.",
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
