@@ -13,6 +13,16 @@ fun DashboardScreen() {
     var streak by remember { mutableStateOf(0) }
     var hasSavedToday by remember { mutableStateOf(false) }
     var selectedAmount by remember { mutableStateOf(5) }
+    var skrBalance by remember { mutableStateOf(0) }
+
+    fun skrForAmount(amount: Int): Int {
+        return when (amount) {
+            5 -> 1
+            10 -> 2
+            25 -> 5
+            else -> 0
+        }
+    }
 
     Scaffold { innerPadding ->
         Column(
@@ -52,13 +62,17 @@ fun DashboardScreen() {
                 }
             }
 
-// Today’s Action
+            // Today’s Action
             Card(modifier = Modifier.fillMaxWidth()) {
                 Column(
                     modifier = Modifier.padding(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text("Today’s Action", style = MaterialTheme.typography.titleMedium)
+                    Text(
+                        text = "Today’s Action",
+                        style = MaterialTheme.typography.titleMedium
+                    )
+
                     Spacer(modifier = Modifier.height(12.dp))
 
                     // Amount Picker
@@ -83,12 +97,21 @@ fun DashboardScreen() {
                         }
                     }
 
+                    // 🔹 SKR PREVIEW (Seeker-facing, no funding needed)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "Earn ${skrForAmount(selectedAmount)} SKR for today’s save",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+
                     Spacer(modifier = Modifier.height(16.dp))
 
+                    // Save Action
                     Button(
                         onClick = {
                             totalSaved += selectedAmount
                             streak += 1
+                            skrBalance += skrForAmount(selectedAmount)
                             hasSavedToday = true
                         },
                         enabled = !hasSavedToday,
@@ -114,19 +137,25 @@ fun DashboardScreen() {
             }
 
 
-            // Rewards Preview
+            // Rewards
             Card(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text("Rewards", style = MaterialTheme.typography.titleMedium)
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text("Rewards coming soon", style = MaterialTheme.typography.bodyLarge)
+
+                    Text(
+                        text = "$skrBalance SKR earned",
+                        style = MaterialTheme.typography.headlineMedium
+                    )
+
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        "Consistency unlocks SKR bonuses.",
+                        text = "Rewards are earned through consistent saving.",
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
             }
+
         }
     }
 }
