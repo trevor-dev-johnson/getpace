@@ -14,6 +14,7 @@ fun DashboardScreen() {
     var hasSavedToday by remember { mutableStateOf(false) }
     var selectedAmount by remember { mutableStateOf(5) }
     var skrBalance by remember { mutableStateOf(0) }
+    var dayCount by remember {mutableStateOf(1)}
 
     fun skrForAmount(amount: Int): Int {
         return when (amount) {
@@ -155,6 +156,65 @@ fun DashboardScreen() {
                     )
                 }
             }
+            // Demo Controls (demo-only)
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant
+                )
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = "Demo Controls",
+                        style = MaterialTheme.typography.titleSmall
+                    )
+
+                    Text(
+                        text = "Day $dayCount",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        OutlinedButton(
+                            onClick = {
+                                // Simulate next day
+                                hasSavedToday = false
+                                dayCount += 1
+                            },
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text("Next Day")
+                        }
+
+                        OutlinedButton(
+                            onClick = {
+                                // Full demo reset
+                                totalSaved = 0
+                                streak = 0
+                                skrBalance = 0
+                                hasSavedToday = false
+                                selectedAmount = 5
+                                dayCount = 1
+                            },
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text("Reset Demo")
+                        }
+                    }
+
+                    Text(
+                        text = "Demo-only controls. Not visible in production.",
+                        style = MaterialTheme.typography.labelSmall
+                    )
+                }
+            }
+
 
         }
     }
